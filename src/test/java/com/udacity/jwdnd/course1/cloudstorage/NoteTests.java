@@ -62,6 +62,11 @@ public class NoteTests extends CloudStorageApplicationTests {
         Note note = homePage.getNote();
         Assertions.assertEquals(modifiedNoteTitle, note.getNoteTitle());
         Assertions.assertEquals(modifiedNoteDescription, note.getNoteDescription());
+
+        deleteNote(homePage);
+
+        homePage = new HomePage(driver);
+        homePage.clickLogoutButton();
     }
 
     /**
@@ -77,14 +82,13 @@ public class NoteTests extends CloudStorageApplicationTests {
         homePage = new HomePage(driver);
         homePage.clickNotesLink();
 
-        Assertions.assertFalse(homePage.validateNote());
+        Assertions.assertFalse(homePage.validateNote(driver));
 
         deleteNote(homePage);
-        Assertions.assertTrue(homePage.validateNote());
+        Assertions.assertTrue(homePage.validateNote(driver));
     }
 
     private void createNote(HomePage homePage, String noteTitle, String noteDescription) {
-        homePage = new HomePage(driver);
         homePage.clickNotesLink();
         homePage.clickAddANewNoteButton();
         homePage.setTitleTextField(noteTitle);

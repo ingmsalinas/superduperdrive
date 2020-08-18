@@ -81,7 +81,7 @@ public class CredentialTests extends CloudStorageApplicationTests {
         HomePage homePage = signUpAndLogin();
         createCredential(homePage, FACEBOOK_URL, FACEBOOK_USERNAME, FACEBOOK_PASSWORD);
         createCredential(homePage, TESLA_URL, TESLA_USERNAME, TESLA_PASSWORD);
-        Assertions.assertFalse(homePage.validateCredentials());
+        Assertions.assertFalse(homePage.validateCredentials(driver));
 
         homePage.clickDeleteLink2();
         ResultPage resultPage = new ResultPage(driver);
@@ -91,10 +91,9 @@ public class CredentialTests extends CloudStorageApplicationTests {
         homePage.clickDeleteLink2();
         resultPage.clickHereLink();
 
-        resultPage.clickHereLink();
         homePage.clickCredentialsLink();
 
-        Assertions.assertTrue(homePage.validateCredentials());
+        Assertions.assertTrue(homePage.validateCredentials(driver));
 
         homePage.clickLogoutButton();
     }

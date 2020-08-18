@@ -16,15 +16,12 @@ public class SignUpPage {
     private int timeout = 15;
 
     @FindBy(css = "a[href='/login']")
-    @CacheLookup
     private WebElement backToLogin;
 
     @FindBy(id = "inputFirstName")
-    @CacheLookup
     private WebElement firstName;
 
     @FindBy(id = "inputLastName")
-    @CacheLookup
     private WebElement lastName;
 
     private final String pageLoadedText = "";
@@ -32,15 +29,12 @@ public class SignUpPage {
     private final String pageUrl = "/signup";
 
     @FindBy(id = "inputPassword")
-    @CacheLookup
     private WebElement password;
 
     @FindBy(id = "submit-button")
-    @CacheLookup
     private WebElement signUp;
 
     @FindBy(id = "inputUsername")
-    @CacheLookup
     private WebElement username;
 
     public SignUpPage() {
@@ -48,8 +42,8 @@ public class SignUpPage {
 
     public SignUpPage(WebDriver driver) {
         this();
-        PageFactory.initElements(driver, this);
         this.driver = driver;
+        PageFactory.initElements(this.driver, this);
     }
 
     public SignUpPage(WebDriver driver, Map<String, String> data) {

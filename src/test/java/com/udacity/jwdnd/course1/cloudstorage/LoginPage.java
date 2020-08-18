@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
@@ -12,15 +13,13 @@ import java.util.Map;
 
 public class LoginPage {
     private Map<String, String> data;
-    private WebDriver driver;
     private int timeout = 15;
+    private JavascriptExecutor js;
 
     @FindBy(id = "signup-link")
-    @CacheLookup
     private WebElement clickHereToSignUp;
 
     @FindBy(id = "submit-button")
-    @CacheLookup
     private WebElement login;
 
     private final String pageLoadedText = "Click here to sign up";
@@ -28,11 +27,9 @@ public class LoginPage {
     private final String pageUrl = "/login";
 
     @FindBy(id = "inputPassword")
-    @CacheLookup
     private WebElement password;
 
     @FindBy(id = "inputUsername")
-    @CacheLookup
     private WebElement username;
 
     public LoginPage() {
@@ -41,7 +38,7 @@ public class LoginPage {
     public LoginPage(WebDriver driver) {
         this();
         PageFactory.initElements(driver, this);
-        this.driver = driver;
+        js = (JavascriptExecutor) driver;
     }
 
     public LoginPage(WebDriver driver, Map<String, String> data) {
@@ -60,7 +57,8 @@ public class LoginPage {
      * @return the LoginPage class instance.
      */
     public LoginPage clickClickHereToSignUpLink() {
-        clickHereToSignUp.click();
+//        clickHereToSignUp.click();
+        js.executeScript("arguments[0].click();", clickHereToSignUp);
         return this;
     }
 
@@ -70,7 +68,8 @@ public class LoginPage {
      * @return the LoginPage class instance.
      */
     public LoginPage clickLoginButton() {
-        login.click();
+//        login.click();
+        js.executeScript("arguments[0].click();", login);
         return this;
     }
 
@@ -148,7 +147,7 @@ public class LoginPage {
      *
      * @return the LoginPage class instance.
      */
-    public LoginPage verifyPageLoaded() {
+    public LoginPage verifyPageLoaded(WebDriver driver) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(pageLoadedText);
@@ -162,7 +161,7 @@ public class LoginPage {
      *
      * @return the LoginPage class instance.
      */
-    public LoginPage verifyPageUrl() {
+    public LoginPage verifyPageUrl(WebDriver driver) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getCurrentUrl().contains(pageUrl);

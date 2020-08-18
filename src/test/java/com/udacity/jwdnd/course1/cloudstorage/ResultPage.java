@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
@@ -13,12 +14,11 @@ import java.util.Map;
 
 public class ResultPage {
     private Map<String, String> data;
-    private WebDriver driver;
     private int timeout = 15;
     private WebDriverWait wait;
+    private JavascriptExecutor js;
 
     @FindBy(id = "anchorResultSuccess")
-    @CacheLookup
     private WebElement here;
 
     private final String pageLoadedText = "Your changes were successfully saved";
@@ -32,7 +32,7 @@ public class ResultPage {
         this();
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, timeout);
-        this.driver = driver;
+        js = (JavascriptExecutor) driver;
     }
 
     public ResultPage(WebDriver driver, Map<String, String> data) {
@@ -51,7 +51,8 @@ public class ResultPage {
      * @return the ResultPage class instance.
      */
     public ResultPage clickHereLink() {
-        wait.until(ExpectedConditions.elementToBeClickable(here)).click();
+//        wait.until(ExpectedConditions.elementToBeClickable(here)).click();
+        js.executeScript("arguments[0].click();", here);
         return this;
     }
 
@@ -60,7 +61,7 @@ public class ResultPage {
      *
      * @return the ResultPage class instance.
      */
-    public ResultPage verifyPageLoaded() {
+    public ResultPage verifyPageLoaded(WebDriver driver) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(pageLoadedText);
@@ -74,7 +75,7 @@ public class ResultPage {
      *
      * @return the ResultPage class instance.
      */
-    public ResultPage verifyPageUrl() {
+    public ResultPage verifyPageUrl(WebDriver driver) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getCurrentUrl().contains(pageUrl);
