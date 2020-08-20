@@ -58,7 +58,10 @@ public class FileController {
         if (fileForm.getFile().isEmpty()){
             model.addAttribute("message", "Empty File");
             model.addAttribute("result", "error");
-        } else if (validateFileName(fileForm.getFile(), fileService.getFiles(userId))) {
+        }else if (fileForm.getFile().getSize() >= 10000000){
+            model.addAttribute("message", "Max File size's 10MB");
+            model.addAttribute("result", "error");
+        }else if (validateFileName(fileForm.getFile(), fileService.getFiles(userId))) {
             fileService.addFile(fileForm);
             model.addAttribute("result", "success");
         } else {
